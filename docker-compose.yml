@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db-postgres:
+    build: .
+    container_name: staging_pg
+    environment:
+      POSTGRES_USERNAME: "user"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./tools:/app/
+      - ./config:/etc/ora2pg
+      - ./postgreSQL:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - sql-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "postgres@mail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    ports:
+      - "25432:80"
+    depends_on:
+      - db-postgres
+    restart: always
+    networks:
+      - sql-network
+
+networks: 
+  sql-network:
+    driver: bridge

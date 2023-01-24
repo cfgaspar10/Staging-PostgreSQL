@@ -1,0 +1,2 @@
+ora2pg -d -n hr -t TABLE -o /import/hr_tables.sql
+psql -Upostgres -h localhost -d hr_pgbr < import/hr_tables.sql
